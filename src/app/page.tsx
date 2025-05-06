@@ -15,7 +15,7 @@ export default function Home() {
       <h1>Tetris</h1>
       <div className={styles.container}>
         <div className={styles.left}>
-          <h1>Left</h1>
+          <h1>Left{playField}</h1>
         </div>
         <div className={styles.right}>
           <h1>Right</h1>
