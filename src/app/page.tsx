@@ -1,18 +1,16 @@
-'use client'
+'use client';
 
 import styles from './page.module.css';
 
-export default function Home(){
-
+export default function Home() {
   //Tetrisの初期プレイフィールドを意味する。
-  const playFieldRows:number = 20; 
-  const playFieldColumns:number = 10; 
-  const playField:number[][] = new Array(playFieldRows)
-      .fill(0)
-      .map(() => new Array(playFieldColumns)
-      .fill(0));
+  const playFieldRows: number = 20;
+  const playFieldColumns: number = 10;
+  const playField: number[][] = new Array(playFieldRows)
+    .fill(0)
+    .map(() => new Array(playFieldColumns).fill(0));
 
-  return(
+  return (
     <>
       <h1>Tetris</h1>
       <div className={styles.container}>
