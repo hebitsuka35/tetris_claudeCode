@@ -2,6 +2,10 @@
 
 import styles from './page.module.css';
 import playField from '../components/display/playFieldDisplay'
+import NextShape from '../components/display/nextShapeDisplay';
+import Level from '../components/display/levelDisplay';
+import Point from '../components/display/pointDisplay';
+import Reset from '../utils/reset';
 
 export default function Home() {
 
@@ -10,10 +14,13 @@ export default function Home() {
       <h1>Tetris</h1>
       <div className={styles.container}>
         <div className={styles.left}>
-          <h1>Left{playField}</h1>
+          <h1>{playField}</h1>
         </div>
         <div className={styles.right}>
-          <h1>Right</h1>
+          <NextShape/>
+          <Level/>
+          <Point/>
+          <Reset/>
         </div>
       </div>
     </>
