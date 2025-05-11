@@ -1,3 +1,9 @@
+.title {
+  height: 40px;
+  margin-left: 10px;
+  font-size: 20px;
+}
+
 .container {
   display: flex;
   align-items: flex-start;
@@ -16,9 +22,9 @@
   display: grid;
   grid-template-rows: repeat(20,40px);
   grid-template-columns: repeat(10,40px);
-  gap: 2px;
   width: 400px;
   height: 800px;
+  margin-left: 10px;
 }
 
 .cell {
@@ -27,6 +33,7 @@
   justify-content: center;
   width: 40px;
   height: 40px;
+  background-color: white;
   border: 1px solid gray;
 }
 
