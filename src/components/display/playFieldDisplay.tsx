@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styles from '../../app/page.module.css';
 
 const PlayFieldDisplay = () => {
@@ -13,7 +14,11 @@ const PlayFieldDisplay = () => {
       <div className={styles.playField}>
         {playField.map((row, y) =>
           row.map((cell, x) => (
-            <div className={styles.cell} key={`${x}-${y}`}>
+            <div 
+              key={`${x}-${y}`}
+              className={styles.cell} 
+              style={{backgroundColor: cell === 0 ?"white" : "gray"}}
+              >
             </div>
           )),
         )}
