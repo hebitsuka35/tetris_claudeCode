@@ -1,7 +1,6 @@
 .title {
-  height: 40px;
-  margin-left: 10px;
-  font-size: 20px;
+  margin: 10px;
+  font-size: small;
 }
 
 .container {
@@ -20,10 +19,10 @@
 
 .playField {
   display: grid;
-  grid-template-rows: repeat(20,40px);
-  grid-template-columns: repeat(10,40px);
-  width: 400px;
-  height: 800px;
+  grid-template-rows: repeat(20,20px);
+  grid-template-columns: repeat(10,20px);
+  width: 200px;
+  height: 400px;
   margin-left: 10px;
 }
 
@@ -31,8 +30,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 20px;
+  height: 20px;
   background-color: white;
   border: 1px solid black;
 }
@@ -41,12 +40,58 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin-right: 20px;
+  margin: 1px;
 }
 
 .rightElements {
+  position: relative; 
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  margin-bottom: 20px;
+  flex-direction: column;
+  align-items: center;   
+  justify-content: flex-start; 
+  width: 160px;
+  height: 120px;
+  margin: 1px;
+  font-size: small;
+  border-top: 1px dotted gray;
+}
+
+.rightElementsTitle {
+  position: absolute; 
+  top: 0;
+  left: 0;
+  width: auto;
+  height: auto;
+  margin: 2px; 
+  font-size: small;
+}
+
+.nextShape {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 80px;
+  margin-top: auto;
+  font-size: medium;
+}
+
+.level {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 80px;
+  margin-top: auto;
+  font-size: xx-large;
+}
+
+.point {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 120px;
+  height: 80px;
+  margin-top: auto;
+  font-size: xx-large;
 }

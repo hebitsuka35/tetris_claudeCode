@@ -4,7 +4,12 @@ const NextShape = () => {
   return (
     <>
       <div className={styles.rightElements}>
-        <h1>Next Shape</h1>
+        <div className={styles.rightElementsTitle}>
+        NEXT SHAPE
+        </div>
+        <div className={styles.nextShape}>
+          XXXX
+        </div>
       </div>
     </>
   );

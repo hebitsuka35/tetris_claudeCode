@@ -4,7 +4,12 @@ const Point = () => {
   return (
     <>
       <div className={styles.rightElements}>
-        <h1>Point</h1>
+        <div className={styles.rightElementsTitle}>
+        POINT
+        </div>
+        <div className={styles.point}>
+          999
+        </div>
       </div>
     </>
   );

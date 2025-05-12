@@ -4,7 +4,12 @@ const Level = () => {
   return (
     <>
       <div className={styles.rightElements}>
-        <h1>Level</h1>
+        <div className={styles.rightElementsTitle}>
+        LEVEL
+        </div>
+        <div className={styles.level}>
+          999
+        </div>
       </div>
     </>
   );
