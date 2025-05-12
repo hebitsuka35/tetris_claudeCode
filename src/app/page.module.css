@@ -99,3 +99,9 @@
   margin-top: auto;
   font-size: xx-large;
 }
+
+.footer {
+  margin-top: 5px;
+  margin-left: 10px;
+  font-size: xx-small;
+}

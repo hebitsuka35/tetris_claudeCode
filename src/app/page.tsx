@@ -20,6 +20,9 @@ export default function Home() {
           <Point />
         </div>
       </div>
+      <div className={styles.footer}>
+          F5ボタンでリセットできます。
+      </div>
     </>
   );
 }
