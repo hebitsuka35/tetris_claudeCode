@@ -1,13 +1,25 @@
 import styles from '../../app/page.module.css';
-import NextShapeI from '../shapes/nextShapeI';
+import { nextShapeI } from '../shapes/nextShape';
 
 const NextShape = () => {
+  const nextShape = nextShapeI();
+
   return (
     <>
       <div className={styles.rightElements}>
         <div className={styles.rightElementsTitle}>NEXT SHAPE</div>
         <div className={styles.nextShape}>
-          <NextShapeI />
+          <div className={styles.nextShapeField}>
+            {nextShape.map((row, y) =>
+              row.map((cell, x) => (
+                <div
+                  key={`${x}-${y}`}
+                  className={styles.cell}
+                  style={{ backgroundColor: cell === 0 ? 'white' : 'lightgray' }}
+                />
+              )),
+            )}
+          </div>
         </div>
       </div>
     </>
