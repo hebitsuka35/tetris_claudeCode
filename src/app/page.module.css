@@ -28,6 +28,14 @@
   width: 200px;
   height: 400px;
   margin-left: 10px;
+  border: gray;
+}
+
+.nextShapeField {
+  display: grid;
+  grid-template-rows: repeat(4,20px);
+  grid-template-columns: repeat(4,20px);
+  border: gray;
 }
 
 .cell {
@@ -37,7 +45,7 @@
   width: 20px;
   height: 20px;
   background-color: white;
-  border: 1px solid black;
+  border: 1px solid gray;
 }
 
 .right {
