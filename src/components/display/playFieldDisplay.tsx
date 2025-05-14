@@ -1,23 +1,22 @@
-import React,{useEffect} from 'react';
+import { useEffect } from 'react';
 import styles from '../../app/page.module.css';
-import generatePlayField from '../utils/generatePlayField';
 import downShapeFn from '../utils/downShapeFn';
+import generatePlayField from '../utils/generatePlayField';
 
 const PlayFieldDisplay = () => {
   const playField = generatePlayField();
 
-  const downShape = (event:KeyboardEvent) => {
-    if(event.key === "ArrowDown"){
+  const downShape = (event: KeyboardEvent) => {
+    if (event.key === 'ArrowDown') {
       downShapeFn();
-    };
+    }
   };
   useEffect(() => {
-    window.addEventListener("keydown",downShape);
+    window.addEventListener('keydown', downShape);
     return () => {
-      window.removeEventListener("keydown",downShape);
+      window.removeEventListener('keydown', downShape);
     };
-  },[]);
-
+  }, []);
 
   return (
     <>
