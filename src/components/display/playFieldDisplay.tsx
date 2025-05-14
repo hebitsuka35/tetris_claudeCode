@@ -1,16 +1,29 @@
-import { useEffect } from 'react';
+"use client"
+
+import { useEffect, useState } from 'react';
 import styles from '../../app/page.module.css';
-import downShapeFn from '../utils/downShapeFn';
-import generatePlayField from '../utils/generatePlayField';
+import { shapeIPlayField } from '../shapes/shapePlayField';
 
 const PlayFieldDisplay = () => {
-  const playField = generatePlayField();
+  const [playField,setPlayField] = useState(shapeIPlayField());
+  const [downShapeCount,setDownShapeCount] = useState(0);
 
+  
   const downShape = (event: KeyboardEvent) => {
     if (event.key === 'ArrowDown') {
-      downShapeFn();
-    }
-  };
+      setPlayField((prevField) => {
+        if(downShapeCount < 3){
+          const newField = [...prevField];
+          newField.pop();
+          newField.unshift(new Array(10).fill(0));
+          setDownShapeCount((prevCount) => prevCount + 1);
+          return newField;
+        }
+        return prevField;
+        });
+      }
+    };
+
   useEffect(() => {
     window.addEventListener('keydown', downShape);
     return () => {
