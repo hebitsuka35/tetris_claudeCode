@@ -6,21 +6,15 @@ import { shapeIPlayField } from '../shapes/shapePlayField';
 
 const PlayFieldDisplay = () => {
   const [playField,setPlayField] = useState(shapeIPlayField());
-  const [downShapeCount,setDownShapeCount] = useState(0);
 
-  
-  const downShape = (event: KeyboardEvent) => {
+    const downShape = (event: KeyboardEvent) => {
     if (event.key === 'ArrowDown') {
       setPlayField((prevField) => {
-        if(downShapeCount < 3){
           const newField = [...prevField];
           newField.pop();
           newField.unshift(new Array(10).fill(0));
-          setDownShapeCount((prevCount) => prevCount + 1);
           return newField;
-        }
-        return prevField;
-        });
+        })
       }
     };
 
