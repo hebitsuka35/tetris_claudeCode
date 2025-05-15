@@ -23,19 +23,38 @@ const PlayFieldDisplay = () => {
     [downShapeCount],
   );
 
-  const leftShape = useCallback(
-    (event: KeyboardEvent) => {
-      if (event.key === 'ArrowLeft') {
-        for (const row of playField) {
+  const leftShape = useCallback((event: KeyboardEvent) => {
+    if (event.key === 'ArrowLeft') {
+      setPlayField((prevField) => {
+        for (const row of prevField) {
           if (row[0] !== 0) {
+            return prevField;
+          }
+        }
+        const newField = prevField.map((row) => {
+          const newRow = [...row];
+          newRow.shift();
+          newRow.push(0);
+          return newRow;
+        });
+        return newField;
+      });
+    }
+  }, []);
+
+  const rightShape = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === 'ArrowRight') {
+        for (const row of playField) {
+          if (row[9] !== 0) {
             return;
           }
         }
         setPlayField((prevField) => {
           const newField = prevField.map((row) => {
             const newRow = [...row];
-            newRow.shift();
-            newRow.push(0);
+            newRow.pop();
+            newRow.unshift(0);
             return newRow;
           });
           return newField;
@@ -48,11 +67,13 @@ const PlayFieldDisplay = () => {
   useEffect(() => {
     window.addEventListener('keydown', downShape);
     window.addEventListener('keydown', leftShape);
+    window.addEventListener('keydown', rightShape);
     return () => {
       window.removeEventListener('keydown', downShape);
-      window.removeEventListener('keydown', leftShape);
+      window.addEventListener('keydown', leftShape);
+      window.removeEventListener('keydown', rightShape);
     };
-  }, [downShape, leftShape]);
+  }, [downShape, leftShape, rightShape]);
 
   return (
     <>
