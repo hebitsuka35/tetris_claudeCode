@@ -23,12 +23,35 @@ const PlayFieldDisplay = () => {
     [downShapeCount],
   );
 
+  const leftShape = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === 'ArrowLeft') {
+        const canMoveLeft = playField.every((row) => row[0] === 0);
+        if (!canMoveLeft) {
+          return;
+        }
+        setPlayField((prevField) => {
+          const newField = prevField.map((row) => {
+            const newRow = [...row];
+            newRow.shift();
+            newRow.push(0);
+            return newRow;
+          });
+          return newField;
+        });
+      }
+    },
+    [playField],
+  );
+
   useEffect(() => {
     window.addEventListener('keydown', downShape);
+    window.addEventListener('keydown', leftShape);
     return () => {
       window.removeEventListener('keydown', downShape);
+      window.removeEventListener('keydown', leftShape);
     };
-  }, [downShape]);
+  }, [downShape, leftShape]);
 
   return (
     <>
