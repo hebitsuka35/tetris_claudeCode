@@ -26,9 +26,10 @@ const PlayFieldDisplay = () => {
   const leftShape = useCallback(
     (event: KeyboardEvent) => {
       if (event.key === 'ArrowLeft') {
-        const canMoveLeft = playField.every((row) => row[0] === 0);
-        if (!canMoveLeft) {
-          return;
+        for (const row of playField) {
+          if (row[0] !== 0) {
+            return;
+          }
         }
         setPlayField((prevField) => {
           const newField = prevField.map((row) => {
