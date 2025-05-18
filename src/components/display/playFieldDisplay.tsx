@@ -68,9 +68,12 @@ const PlayFieldDisplay = () => {
     window.addEventListener('keydown', downShape);
     window.addEventListener('keydown', leftShape);
     window.addEventListener('keydown', rightShape);
+    document.addEventListener('keydown', function (event) {
+      event.preventDefault();
+    });
     return () => {
       window.removeEventListener('keydown', downShape);
-      window.addEventListener('keydown', leftShape);
+      window.removeEventListener('keydown', leftShape);
       window.removeEventListener('keydown', rightShape);
     };
   }, [downShape, leftShape, rightShape]);
