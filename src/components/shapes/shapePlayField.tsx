@@ -1,13 +1,10 @@
 import generatePlayField from '../utils/generatePlayField';
 
-const shapeIPlayField = () => {
-  const shapeIPlayField = generatePlayField();
-  shapeIPlayField[0][3] = 1;
-  shapeIPlayField[0][4] = 1;
-  shapeIPlayField[0][5] = 1;
-  shapeIPlayField[0][6] = 1;
+const shape1PlayField = () => {
+  const shape1PlayField = generatePlayField();
+  shape1PlayField[0][4] = 1;
 
-  return shapeIPlayField;
+  return shape1PlayField;
 };
 
-export { shapeIPlayField };
+export { shape1PlayField };

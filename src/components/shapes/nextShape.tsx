@@ -1,14 +1,11 @@
 import generateNextShape from '../utils/generateNextShape';
 
-const nextShapeI = () => {
-  const nextShapeI = generateNextShape();
+const nextShape1 = () => {
+  const nextShape1 = generateNextShape();
 
-  nextShapeI[3][0] = 1;
-  nextShapeI[3][1] = 1;
-  nextShapeI[3][2] = 1;
-  nextShapeI[3][3] = 1;
+  nextShape1[3][1] = 1;
 
-  return nextShapeI;
+  return nextShape1;
 };
 
-export { nextShapeI };
+export { nextShape1 };

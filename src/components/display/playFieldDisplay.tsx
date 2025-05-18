@@ -2,10 +2,10 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import styles from '../../app/page.module.css';
-import { shapeIPlayField } from '../shapes/shapePlayField';
+import { shape1PlayField } from '../shapes/shapePlayField';
 
 const PlayFieldDisplay = () => {
-  const [playField, setPlayField] = useState<number[][]>(shapeIPlayField());
+  const [playField, setPlayField] = useState<number[][]>(shape1PlayField());
   const [downShapeCount, setDownShapeCount] = useState<number>(0);
 
   const downShape = useCallback(

@@ -1,8 +1,8 @@
 import styles from '../../app/page.module.css';
-import { nextShapeI } from '../shapes/nextShape';
+import { nextShape1 } from '../shapes/nextShape';
 
 const NextShape = () => {
-  const nextShape = nextShapeI();
+  const nextShape = nextShape1();
 
   return (
     <>
