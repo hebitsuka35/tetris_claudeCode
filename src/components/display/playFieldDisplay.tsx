@@ -13,7 +13,7 @@ const PlayFieldDisplay = () => {
   ];
 
   const hasShapeBottom = (playField: number[][]): boolean => {
-    for (let x = 0; x < playField[0].length, x++; ) {
+    for (let x = 0; x < playField[0].length; x++) {
       if (playField[playField.length - 1][x] === 1) {
         return true;
       }
@@ -77,6 +77,20 @@ const PlayFieldDisplay = () => {
     },
     [playField],
   );
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setPlayField((prevField) => {
+        const newField = [...prevField];
+        newField.pop();
+        newField.unshift(new Array(10).fill(0) as number[]);
+        return newField;
+      });
+    }, 1000);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
 
   useEffect(() => {
     window.addEventListener('keydown', downShape);
