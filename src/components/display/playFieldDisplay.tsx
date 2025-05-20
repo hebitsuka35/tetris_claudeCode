@@ -8,22 +8,8 @@ const PlayFieldDisplay = () => {
   const [playField, setPlayField] = useState<number[][]>(shape1PlayField());
   const [downShapeCount, setDownShapeCount] = useState<number>(0);
 
-  const directions: number[][] = [
-    [0, 1], //下
-  ];
-
-  const hasShapeBottom = (playField: number[][]): boolean => {
-    for (let x = 0; x < playField[0].length; x++) {
-      if (playField[playField.length - 1][x] === 1) {
-        return true;
-      }
-    }
-    return false;
-  };
-
   const downShape = useCallback(
     (event: KeyboardEvent) => {
-      if (hasShapeBottom(playField)) return 0;
       if (event.key === 'ArrowDown' && downShapeCount < 19) {
         setPlayField((prevField) => {
           const newField = [...prevField];
@@ -34,7 +20,7 @@ const PlayFieldDisplay = () => {
         setDownShapeCount((prevCount) => prevCount + 1);
       }
     },
-    [downShapeCount, playField],
+    [downShapeCount],
   );
 
   const leftShape = useCallback((event: KeyboardEvent) => {

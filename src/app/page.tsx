@@ -20,7 +20,7 @@ export default function Home() {
           <Point />
         </div>
       </div>
-      <div className={styles.footer}>F5ボタンでリセットできます。</div>
+      <div className={styles.footer}>ブラウザを更新するとリセットします。</div>
     </>
   );
 }
