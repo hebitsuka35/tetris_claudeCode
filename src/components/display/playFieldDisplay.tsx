@@ -77,7 +77,15 @@ const PlayFieldDisplay = ({ gameState, onGameStateChange }: PlayFieldDisplayProp
         });
       }
     },
-    [gameState, onGameStateChange],
+    [
+      gameState.playField,
+      gameState.currentPiece,
+      gameState.gameOver,
+      gameState.score,
+      gameState.level,
+      gameState.lines,
+      onGameStateChange,
+    ],
   );
 
   const rotatePieceHandler = useCallback(() => {
@@ -90,7 +98,7 @@ const PlayFieldDisplay = ({ gameState, onGameStateChange }: PlayFieldDisplayProp
         currentPiece: rotatedPiece,
       });
     }
-  }, [gameState, onGameStateChange]);
+  }, [gameState.playField, gameState.currentPiece, gameState.gameOver, onGameStateChange]);
 
   const handleKeyPress = useCallback(
     (event: KeyboardEvent) => {
