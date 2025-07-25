@@ -22,19 +22,35 @@
 }
 
 .playField {
+  position: relative;
   display: grid;
-  grid-template-rows: repeat(20,20px);
-  grid-template-columns: repeat(10,20px);
+  grid-template-rows: repeat(21, 20px);
+  grid-template-columns: repeat(10, 20px);
   width: 200px;
-  height: 400px;
+  height: 420px;
   margin-left: 10px;
   border: gray;
 }
 
+.gameOver {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 10;
+  padding: 20px;
+  font-size: large;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  background-color: rgb(0 0 0 / 80%);
+  border-radius: 5px;
+  transform: translate(-50%, -50%);
+}
+
 .nextShapeField {
   display: grid;
-  grid-template-rows: repeat(4,20px);
-  grid-template-columns: repeat(4,20px);
+  grid-template-rows: repeat(4, 20px);
+  grid-template-columns: repeat(4, 20px);
   margin-bottom: 20px;
   border: gray;
 }
@@ -57,11 +73,11 @@
 }
 
 .rightElements {
-  position: relative; 
+  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;   
-  justify-content: flex-start; 
+  align-items: center;
+  justify-content: flex-start;
   width: 160px;
   height: 120px;
   margin: 1px;
@@ -70,12 +86,12 @@
 }
 
 .rightElementsTitle {
-  position: absolute; 
+  position: absolute;
   top: 0;
   left: 0;
   width: auto;
   height: auto;
-  margin: 2px; 
+  margin: 2px;
   font-size: small;
 }
 

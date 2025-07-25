@@ -2,108 +2,204 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import styles from '../../app/page.module.css';
-import { shape1PlayField } from '../shapes/shapePlayField';
+import type { GameState } from '../../types/tetris';
+import { TETROMINO_COLORS } from '../../types/tetris';
+import {
+  calculateScore,
+  clearLines,
+  createPiece,
+  getDropSpeed,
+  getGridWithPiece,
+  getRandomTetromino,
+  isValidPosition,
+  placePiece,
+  rotatePiece,
+} from '../../utils/tetrisLogic';
 
-const PlayFieldDisplay = () => {
-  const [playField, setPlayField] = useState<number[][]>(shape1PlayField());
-  const [downShapeCount, setDownShapeCount] = useState<number>(0);
+interface PlayFieldDisplayProps {
+  gameState: GameState;
+  onGameStateChange: (gameState: GameState) => void;
+}
 
-  const downShape = useCallback(
-    (event: KeyboardEvent) => {
-      if (event.key === 'ArrowDown' && downShapeCount < 19) {
-        setPlayField((prevField) => {
-          const newField = [...prevField];
-          newField.pop();
-          newField.unshift(new Array(10).fill(0) as number[]);
-          return newField;
+const PlayFieldDisplay = ({ gameState, onGameStateChange }: PlayFieldDisplayProps) => {
+  const [dropTime, setDropTime] = useState<number | null>(null);
+
+  const spawnNewPiece = useCallback(() => {
+    const newPiece = gameState.nextPiece || createPiece(getRandomTetromino());
+    const nextPiece = createPiece(getRandomTetromino());
+
+    if (!isValidPosition(gameState.playField, newPiece)) {
+      onGameStateChange({
+        ...gameState,
+        gameOver: true,
+      });
+      return;
+    }
+
+    onGameStateChange({
+      ...gameState,
+      currentPiece: newPiece,
+      nextPiece,
+    });
+  }, [gameState, onGameStateChange]);
+
+  const movePiece = useCallback(
+    (deltaX: number, deltaY: number) => {
+      if (!gameState.currentPiece || gameState.gameOver) return;
+
+      const newPosition = {
+        x: gameState.currentPiece.position.x + deltaX,
+        y: gameState.currentPiece.position.y + deltaY,
+      };
+
+      if (isValidPosition(gameState.playField, gameState.currentPiece, newPosition)) {
+        onGameStateChange({
+          ...gameState,
+          currentPiece: {
+            ...gameState.currentPiece,
+            position: newPosition,
+          },
         });
-        setDownShapeCount((prevCount) => prevCount + 1);
+      } else if (deltaY > 0) {
+        // Piece hit bottom, place it
+        const newGrid = placePiece(gameState.playField, gameState.currentPiece);
+        const { newGrid: clearedGrid, linesCleared } = clearLines(newGrid);
+        const newScore = gameState.score + calculateScore(linesCleared, gameState.level);
+        const newLines = gameState.lines + linesCleared;
+        // レベルアップはタイマーで行うのでここではlevelを変更しない
+        onGameStateChange({
+          ...gameState,
+          playField: clearedGrid,
+          currentPiece: null,
+          score: newScore,
+          lines: newLines,
+          // level: newLevel, // 削除
+        });
       }
     },
-    [downShapeCount],
+    [gameState, onGameStateChange],
   );
 
-  const leftShape = useCallback((event: KeyboardEvent) => {
-    if (event.key === 'ArrowLeft') {
-      setPlayField((prevField) => {
-        for (const row of prevField) {
-          if (row[0] !== 0) {
-            return prevField;
-          }
-        }
-        const newField = prevField.map((row) => {
-          const newRow = [...row];
-          newRow.shift();
-          newRow.push(0);
-          return newRow;
-        });
-        return newField;
+  const rotatePieceHandler = useCallback(() => {
+    if (!gameState.currentPiece || gameState.gameOver) return;
+
+    const rotatedPiece = rotatePiece(gameState.currentPiece);
+    if (isValidPosition(gameState.playField, rotatedPiece)) {
+      onGameStateChange({
+        ...gameState,
+        currentPiece: rotatedPiece,
       });
     }
-  }, []);
+  }, [gameState, onGameStateChange]);
 
-  const rightShape = useCallback(
+  const handleKeyPress = useCallback(
     (event: KeyboardEvent) => {
-      if (event.key === 'ArrowRight') {
-        for (const row of playField) {
-          if (row[9] !== 0) {
-            return;
-          }
-        }
-        setPlayField((prevField) => {
-          const newField = prevField.map((row) => {
-            const newRow = [...row];
-            newRow.pop();
-            newRow.unshift(0);
-            return newRow;
-          });
-          return newField;
-        });
+      if (gameState.gameOver) return;
+
+      switch (event.key) {
+        case 'ArrowLeft':
+          movePiece(-1, 0);
+          break;
+        case 'ArrowRight':
+          movePiece(1, 0);
+          break;
+        case 'ArrowDown':
+          movePiece(0, 1);
+          break;
+        case 'ArrowUp':
+        case ' ':
+          rotatePieceHandler();
+          break;
       }
     },
-    [playField],
+    [movePiece, rotatePieceHandler, gameState.gameOver],
   );
 
+  // Auto drop
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setPlayField((prevField) => {
-        const newField = [...prevField];
-        newField.pop();
-        newField.unshift(new Array(10).fill(0) as number[]);
-        return newField;
-      });
-    }, 1000);
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, []);
+    if (gameState.gameOver) {
+      setDropTime(null);
+      return;
+    }
+
+    const speed = getDropSpeed(gameState.level);
+    setDropTime(speed);
+  }, [gameState.level, gameState.gameOver]);
 
   useEffect(() => {
-    window.addEventListener('keydown', downShape);
-    window.addEventListener('keydown', leftShape);
-    window.addEventListener('keydown', rightShape);
-    document.addEventListener('keydown', function (event) {
-      event.preventDefault();
-    });
+    if (dropTime === null) return;
+
+    const interval = setInterval(() => {
+      movePiece(0, 1);
+    }, dropTime);
+
+    return () => clearInterval(interval);
+  }, [dropTime, movePiece]);
+
+  // Spawn new piece when current piece is null
+  useEffect(() => {
+    if (!gameState.currentPiece && !gameState.gameOver) {
+      const timer = setTimeout(() => {
+        spawnNewPiece();
+      }, 100);
+      return () => clearTimeout(timer);
+    }
+  }, [gameState.currentPiece, gameState.gameOver, spawnNewPiece]);
+
+  // Keyboard events
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyPress);
     return () => {
-      window.removeEventListener('keydown', downShape);
-      window.removeEventListener('keydown', leftShape);
-      window.removeEventListener('keydown', rightShape);
+      document.removeEventListener('keydown', handleKeyPress);
     };
-  }, [downShape, leftShape, rightShape]);
+  }, [handleKeyPress]);
+
+  // 30秒ごとにレベルアップ
+  useEffect(() => {
+    if (gameState.gameOver) return;
+    const levelUpTimer = setInterval(() => {
+      onGameStateChange({
+        ...gameState,
+        level: gameState.level + 1,
+      });
+    }, 30000);
+    return () => clearInterval(levelUpTimer);
+  }, [gameState, gameState.gameOver, onGameStateChange]);
+
+  const getCellColor = (cellValue: number): string => {
+    if (cellValue === 0) return 'white';
+
+    const colorMap: Record<number, string> = {
+      1: TETROMINO_COLORS.I,
+      2: TETROMINO_COLORS.O,
+      3: TETROMINO_COLORS.T,
+      4: TETROMINO_COLORS.S,
+      5: TETROMINO_COLORS.Z,
+      6: TETROMINO_COLORS.J,
+      7: TETROMINO_COLORS.L,
+    };
+
+    return colorMap[cellValue] || 'lightgray';
+  };
+
+  const displayGrid = getGridWithPiece(gameState.playField, gameState.currentPiece);
 
   return (
     <>
       <div className={styles.playField}>
-        {playField.map((row, y) =>
+        {displayGrid.map((row, y) =>
           row.map((cell, x) => (
             <div
               key={`${x}-${y}`}
               className={styles.cell}
-              style={{ backgroundColor: cell === 0 ? 'white' : 'lightgray' }}
+              style={{
+                backgroundColor: getCellColor(cell),
+                border: y === 0 ? 'none' : cell === 0 ? '1px solid #ccc' : '1px solid #333',
+              }}
             />
           )),
         )}
+        {gameState.gameOver && <div className={styles.gameOver}>GAME OVER</div>}
       </div>
     </>
   );
