@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import styles from '../../app/page.module.css';
 import type { GameState } from '../../types/tetris';
 import { TETROMINO_COLORS } from '../../types/tetris';
@@ -23,6 +23,8 @@ interface PlayFieldDisplayProps {
 
 const PlayFieldDisplay = ({ gameState, onGameStateChange }: PlayFieldDisplayProps) => {
   const [dropTime, setDropTime] = useState<number | null>(null);
+  const gameStateRef = useRef(gameState);
+  gameStateRef.current = gameState;
 
   const spawnNewPiece = useCallback(() => {
     const newPiece = gameState.nextPiece || createPiece(getRandomTetromino());
@@ -77,15 +79,7 @@ const PlayFieldDisplay = ({ gameState, onGameStateChange }: PlayFieldDisplayProp
         });
       }
     },
-    [
-      gameState.playField,
-      gameState.currentPiece,
-      gameState.gameOver,
-      gameState.score,
-      gameState.level,
-      gameState.lines,
-      onGameStateChange,
-    ],
+    [gameState, onGameStateChange],
   );
 
   const rotatePieceHandler = useCallback(() => {
@@ -98,7 +92,7 @@ const PlayFieldDisplay = ({ gameState, onGameStateChange }: PlayFieldDisplayProp
         currentPiece: rotatedPiece,
       });
     }
-  }, [gameState.playField, gameState.currentPiece, gameState.gameOver, onGameStateChange]);
+  }, [gameState, onGameStateChange]);
 
   const handleKeyPress = useCallback(
     (event: KeyboardEvent) => {
@@ -166,13 +160,16 @@ const PlayFieldDisplay = ({ gameState, onGameStateChange }: PlayFieldDisplayProp
   useEffect(() => {
     if (gameState.gameOver) return;
     const levelUpTimer = setInterval(() => {
-      onGameStateChange({
-        ...gameState,
-        level: gameState.level + 1,
-      });
+      const latest = gameStateRef.current;
+      if (!latest.gameOver && latest.level < 10) {
+        onGameStateChange({
+          ...latest,
+          level: Math.min(latest.level + 1, 10),
+        });
+      }
     }, 30000);
     return () => clearInterval(levelUpTimer);
-  }, [gameState, gameState.gameOver, onGameStateChange]);
+  }, [onGameStateChange, gameState.gameOver]);
 
   const getCellColor = (cellValue: number): string => {
     if (cellValue === 0) return 'white';

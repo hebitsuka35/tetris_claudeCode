@@ -130,3 +130,27 @@
   margin-left: 10px;
   font-size: xx-small;
 }
+
+.restartButton {
+  padding: 10px 28px;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #fff;
+  letter-spacing: 1px;
+  cursor: pointer;
+  background: #222;
+  border: none;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
+  transition:
+    background 0.2s,
+    transform 0.2s,
+    box-shadow 0.2s;
+}
+
+.restartButton:hover,
+.restartButton:focus {
+  background: #444;
+  box-shadow: 0 4px 16px rgb(0 0 0 / 15%);
+  transform: translateY(-2px) scale(1.04);
+}

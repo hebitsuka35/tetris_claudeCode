@@ -58,7 +58,7 @@ export default function Home() {
         {gameState.gameOver && (
           <>
             <br />
-            <button onClick={resetGame} style={{ marginTop: '10px', padding: '5px 10px' }}>
+            <button onClick={resetGame} className={styles.restartButton}>
               リスタート
             </button>
           </>

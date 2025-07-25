@@ -125,5 +125,5 @@ export const getTypeValue = (type: TetrominoType): number => {
 };
 
 export const getDropSpeed = (level: number): number => {
-  return Math.max(50, 1000 - level * 50);
+  return Math.max(50, 1000 / Math.pow(1.5, level));
 };
